@@ -7,7 +7,8 @@ let tableauProduits = [
         descriptionProduits: "Des enceintes de pro pour du son superbe",
         prixProduit: 125.25,
         produitQuantite: 1,
-        produitTTC: 0
+        produitTTC: 0,
+        categorie: "Musique"
     },
     {
         id:2,
@@ -16,7 +17,8 @@ let tableauProduits = [
         descriptionProduits: "Telephone Apple dernier cris, reconditionner",
         prixProduit: 789.25,
         produitQuantite: 1,
-        produitTTC: 0
+        produitTTC: 0,
+        categorie: "Telelphonie"
     },
     {
         id:3,
@@ -25,13 +27,85 @@ let tableauProduits = [
         descriptionProduits: "Version minifier de la Super Nintendo",
         prixProduit: 325.25,
         produitQuantite:1,
-        produitTTC: 0
-    }
+        produitTTC: 0,
+        categorie: "Jeux video"
+    },
+    {
+        id:4,
+        nomProduits: "Chaise Bois",
+        imageProduit: "https://cdn.connox.fr/m/100030/140048/media/stoelcker/Frankfurter-Kuechenstuhl/Frankfurter-Kuechenstuhl-Buche-frei-1200x1200.jpg",
+        descriptionProduits: "Chaise en bois grise IKEA",
+        prixProduit: 205.50,
+        produitQuantite:1,
+        produitTTC: 0,
+        categorie: "Meuble"
+    },
+    {
+        id:5,
+        nomProduits: "Mac Apple",
+        imageProduit: "https://cdn.pocket-lint.com/r/s/1200x/assets/images/152659-laptops-feature-apple-silicon-what-does-it-mean-for-your-existing-mac-and-your-next-one-image3-ompkj48tmh.jpg",
+        descriptionProduits: "Pc Apple avec les derniers processeurs",
+        prixProduit: 45.25,
+        produitQuantite: 1,
+        produitTTC: 0,
+        categorie: "Informatique"
+    },
+    {
+        id:6,
+        nomProduits: "Korg Minilogue",
+        imageProduit: "https://thumbs.static-thomann.de/thumb/thumb600x600/pics/bdb/457066/14351333_800.jpg",
+        descriptionProduits: "Synthetiseur analogique Korg",
+        prixProduit: 1789.25,
+        produitQuantite: 1,
+        produitTTC: 0,
+        categorie: "Musique"
+    },
+
+
 ];
 //recup de la iste HTML <ul>
 let carteProduits = document.getElementById("produits");
 //Creation d'un tableau vide panier=[""]
 let panier = [];
+
+//Rechercher un produits
+//Rechercher
+
+
+function  resultatRecherche() {
+    let listeParent = document.getElementById("produitsRechercher");
+    let barreRecherche = document.getElementById("rechercher")
+    let resultLI = document.createElement("li");
+    resultLI.className = "produit-card-result";
+
+    barreRecherche.addEventListener("input", (event) =>{
+        let inputValue = event.target.value.toLowerCase();
+        console.log(inputValue);
+
+        if(inputValue.length != ""){
+            let res = tableauProduits.filter(produit =>
+                produit.nomProduits.toLowerCase().includes(inputValue))
+            console.log(res)
+            res.map(datas => {
+                resultLI.innerHTML = `
+                    <hr>
+                    <h2 class="resulat-recherche">RESULTAT DE RECHERCHE</h2>
+                    <hr>
+                    <h3 class="titre-produit">${datas.nomProduits}</h3>
+                    <img class="image-produit" src="${datas.imageProduit}" alt="${datas.nomProduits}" title="${datas.nomProduits}">
+                    <p>Description : </p>
+                    <p>${datas.descriptionProduits}</p>
+                    <p>Prix HT : ${datas.prixProduit} Euros</p> 
+                  
+                `
+                listeParent.appendChild(resultLI)
+            });
+        }else{
+            resultLI.innerHTML = "AUCUN RESULTATS"
+        }
+    });
+}
+
 
 //Fonction afficher les produits du tableau d'objet produits
 function afficherProduit(){
@@ -173,6 +247,8 @@ function afficherPanier() {
     })
 }
 
+
+resultatRecherche();
 afficherProduit();
 
 

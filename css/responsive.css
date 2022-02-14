@@ -1,3 +1,43 @@
+@media(max-width: 1024px){
+    /*Page produits*/
+    #main-container{
+        display: block;
+        font-size: 20px;
+    }
+
+
+    .conteneur-left{
+        width: 100%;
+        padding: 10px;
+        margin: 10px;
+    }
+    .conteneur-right{
+        width: 100%;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .produits{
+        margin: 0;
+        padding: 10px;
+    }
+    .titre-produit{
+        font-size: 18px;
+    }
+    .produit-card{
+        margin-top: 20px;
+    }
+    .produit-card p{
+        overflow: hidden;
+        font-size: 14px;
+    }
+    .produit-card img{
+        width: 100%;
+    }
+}
+
+
+
 @media(max-width: 768px){
     .lien{
         display: none;
@@ -5,13 +45,13 @@
     .menuBtn{
         display: block;
         position: relative;
-        right: 10px;
+        right: 30px;
         float: right;
     }
     .menuClasse.responsive  a.menuBtn{
         position: absolute;
-        right: 30px;
-        top: 20px;
+        right: 10px;
+        top: 10px;
     }
 
 
@@ -19,6 +59,7 @@
         display: block;
         text-align: left;
         margin-top: 20px;
+        transition: 1s;
     }
 }
 @media screen and (max-height: 450px) {
