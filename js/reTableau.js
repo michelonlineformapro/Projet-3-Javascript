@@ -77,16 +77,24 @@ let panier = [];
 
 function afficherProduit(){
     let listeUL = document.getElementById("tableau1")
+
     produits.forEach((donnee) => {
         console.log(donnee)
         let listeItemLI = document.createElement("li");
         listeItemLI.className = "classeLI";
         listeItemLI.id = `monIdUnique-${donnee.id}`
 
+
+
         listeItemLI.innerHTML =
             `
         <p>Nom du produit ${donnee.nomProduit}</p>
         <img src="${donnee.image}" alt="${donnee.nomProduit}" title="${donnee.nomProduit}" width="15%">
+      
+     
+        <p>RRIX HT : ${donnee.prixHT} €</p>
+        <p>TAUX DE TVA : 20%</p>
+        
         `
 
         //Ajouter les <li> au parent <ul>
@@ -106,6 +114,13 @@ function afficherProduit(){
     });
 }
 
+/*
+function getTVA(prixHT, tauxTVA){
+    console.log(prixHT * tauxTVA)
+}
+
+getTVA(200, 1.2)
+*/
 function afficherPanier(){
     //Recup le <ul> html
 
@@ -116,10 +131,20 @@ function afficherPanier(){
 
         produitPanier +=
             `
-            <li id="panier-produit-${produit.id}">
+            <li class="classeLI" id="panier-produit-${produit.id}">
                 <p style="color: red">Nom du produit ${produit.nomProduit}</p>
                 <img src="${produit.image}" alt="${produit.nomProduit}" title="${produit.nomProduit}" width="15%">
-                <p>Prix TTC = ${prixTTC} €</p>
+                  <select id="selectQuantites-${produit.id}">
+                    <option selected>Choisir les quantitées</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>+ 10</option>
+                </select>
+                <p>Prix Hors Taxe: ${produit.prixHT} €</p>
+                <p id="total-${produit.id}">TOTAL</p>
             </li>
             `
     });
@@ -132,18 +157,58 @@ function afficherPanier(){
         let produitTableau1 = document.getElementById(`monIdUnique-${supprimer.id}`)
         let produitsSupprimer = document.getElementById(`panier-produit-${supprimer.id}`);
 
-        produitsSupprimer.addEventListener("click", function (){
+        //On creer un bouton pour les produits ajouter au panier panier
+        let btnSupprimer = document.createElement("button");
+        //Ajout d'un id unique a chaque bouton
+        btnSupprimer.id = `btn-supprimer${supprimer.id}`;
+        //Ajout d'une classe au bouton supprimer
+        btnSupprimer.className = "btn-download";
+
+        //Ajout de texte au bouton
+        btnSupprimer.innerHTML = " X ";
+        //On ajoute le bouton a chaque <li> des produits dans le tableau panier
+        produitsSupprimer.appendChild(btnSupprimer);
+
+        //Au clic sur le btouton supprimer
+        btnSupprimer.addEventListener("click", function (){
             //alert("test de clic")
+            //On fait reapparaitre le produits dans le tableau de produit avec css
             produitTableau1.style.display = "block";
+            //On recupère l'index du produit dans le tableau panier
             let panierIndex = panier.indexOf(supprimer);
             console.log("Index du tableau panier " + panierIndex);
-            //recup de l'index du tublaeu apnier et suppression d'un element
+            //recup de l'index du tableau pannier et suppression d'un element
+            /*La méthode splice() modifie le contenu d'un tableau en retirant des éléments et/ou en ajoutant de nouveaux
+             éléments à même le tableau.On peut ainsi vider ou remplacer une partie d'un tableau.*/
             panier.splice(panierIndex, 1);
-            console.log(panier)
+            console.log(panier);
+            //On supprimer le noeud de type element <li> du DOM
             produitsSupprimer.remove()
 
+        });
+        //Recupération de id de chaque select quantité de chaque produit
+        let selectQuantitees = document.getElementById(`selectQuantites-${supprimer.id}`);
+        //Quand l'utilisateur modifie la quantité => on appel une fonction anonyme (callBack)
+        selectQuantitees.addEventListener("change", () => {
+            //Récupération de l'index de chaque <select><option>
+            let indexQuantite = selectQuantitees.selectedIndex;
+            //Debug
+            console.log("INDEX DE LA FENETRE DEROULANTE " + indexQuantite);
+            //On multiplie le prix HT par la quantité
+            let testPrixQuantite = indexQuantite * `${supprimer.prixHT}`;
+            //Debug
+            console.log(testPrixQuantite);
+            document.getElementById(`total-${supprimer.id}`).innerHTML = "Prix HT X Quantitées = " + testPrixQuantite + "€"
+
         })
-    })
+
+
+    });
+
+    //Afficher les quantité de chaque produits
+
+
+
 }
 
 
