@@ -1,4 +1,3 @@
-window.location = "../index.html"
 
 //Tableau simple
 
@@ -172,14 +171,12 @@ function getTVA(prixHT, tauxTVA){
 
 getTVA(200, 1.2)
 */
+//Afficher le contenus du tableau panier rempli avec push() dans la fonction precedente
 function afficherPanier(){
-    //Recup le <ul> html
-
     let produitPanier = "";
 
     panier.forEach(produit => {
-        let prixTTC = `${produit.prixHT} * ${produit.tva}`
-
+        //On ajoute du contenu dynamique a la variavle vide let produitPanier = "";
         produitPanier +=
             `
             <li class="classeLI" id="panier-produit-${produit.id}">
@@ -206,11 +203,12 @@ function afficherPanier(){
 
     //Supprimer un produit du tableau panier
     panier.forEach(supprimer => {
-        //Recup des produits caché (display none) du teableru de produit
-        let produitTableau1 = document.getElementById(`monIdUnique-${supprimer.id}`)
+        //Recup des produits cachés (display none) du tableau de produit
+        let produitTableau1 = document.getElementById(`monIdUnique-${supprimer.id}`);
+        //Recup des produits du tableau panier par id dynamique
         let produitsSupprimer = document.getElementById(`panier-produit-${supprimer.id}`);
 
-        //On creer un bouton pour les produits ajouter au panier panier
+        //On creer un bouton pour les produits ajouter au panier
         let btnSupprimer = document.createElement("button");
         //Ajout d'un id unique a chaque bouton
         btnSupprimer.id = `btn-supprimer${supprimer.id}`;
@@ -222,26 +220,27 @@ function afficherPanier(){
         //On ajoute le bouton a chaque <li> des produits dans le tableau panier
         produitsSupprimer.appendChild(btnSupprimer);
 
-        //Au clic sur le btouton supprimer
+        //Au clic sur le bouton supprimer
         btnSupprimer.addEventListener("click", function (){
             //alert("test de clic")
-            //On fait reapparaitre le produits dans le tableau de produit avec css
+            //On fait re-apparaitre le produits dans le tableau de produit avec css
             produitTableau1.style.display = "block";
             //On recupère l'index du produit dans le tableau panier
             let panierIndex = panier.indexOf(supprimer);
             console.log("Index du tableau panier " + panierIndex);
-            //recup de l'index du tableau pannier et suppression d'un element
+            //recup de l'index du tableau pannier et suppression d'un element avec splice()
             /*La méthode splice() modifie le contenu d'un tableau en retirant des éléments et/ou en ajoutant de nouveaux
              éléments à même le tableau.On peut ainsi vider ou remplacer une partie d'un tableau.*/
             panier.splice(panierIndex, 1);
+            //Debug
             console.log(panier);
             //On supprimer le noeud de type element <li> du DOM
             produitsSupprimer.remove()
 
         });
-        //Recupération de id de chaque select quantité de chaque produit
+        //Recupération de id de chaque select quantité de chaque produit creer ligne 185
         let selectQuantitees = document.getElementById(`selectQuantites-${supprimer.id}`);
-        //Quand l'utilisateur modifie la quantité => on appel une fonction anonyme (callBack)
+        //Quand l'utilisateur modifie la quantité : on detecte le changement d'evenement => et on appel une fonction anonyme (callBack)
         selectQuantitees.addEventListener("change", () => {
             //Récupération de l'index de chaque <select><option>
             let indexQuantite = selectQuantitees.selectedIndex;
@@ -251,31 +250,25 @@ function afficherPanier(){
             let prixMutiplierQuantite = indexQuantite * `${supprimer.prixHT}`;
             //Debug
             console.log(prixMutiplierQuantite );
+            //Recup de id du paragraphe creer ligne 195 et affichage du prixHT * quantites
             document.getElementById(`total-${supprimer.id}`).innerHTML = "Prix HT X Quantitées = " + prixMutiplierQuantite  + "€";
 
-            //Calcul du montant de TVA
-            let montantTVA = prixMutiplierQuantite * .2
-            console.log("Montant de tva = " + montantTVA + " euros")
-
-            let prixTTC = prixMutiplierQuantite + Math.floor(montantTVA);
-
-            console.log("Prix TTC = " + prixTTC + " euros")
-            //Calcul du montant TTC
+            //Calcul du montant de TVA  PrixHT * 20%   0.2 = 20 / 100
+            let montantTVA = prixMutiplierQuantite * .2;
+            console.log("Montant de tva = " + montantTVA + " euros");
+            //Calcul du TTC = prixHT + TVA
+            let prixTTC = prixMutiplierQuantite + montantTVA;
+            //Debug
+            console.log("Prix TTC = " + prixTTC + " euros");
+            //Recup des ids dynamique creer ligne 197 - 199 etc...
+            //Afficher le montant de tva et le prix TTC
             document.getElementById(`tva-${supprimer.id}`).innerHTML = "Montant de TVA a 20% : "  + montantTVA + " €";
             document.getElementById(`ttc-${supprimer.id}`).innerHTML = "Montant TTC : " + prixTTC + " €";
-
-            //Affichage du montant TTC
         });
     });
-
-    //Afficher les quantité de chaque produits
-
-
-
 }
 
-
-
+//Appel de la fonction qui affiche les produits tu tableau Produits
 afficherProduit();
 
 
