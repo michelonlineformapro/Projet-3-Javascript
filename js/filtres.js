@@ -190,5 +190,9 @@ afficherProduitsCategories()
 
 afficherProduits();
 
+function testSourceTree(){
+    console.log("Message pour source tree")
+}
+
 
 
