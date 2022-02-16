@@ -621,3 +621,24 @@ select{
     width: 100px;
     height: 100px;
 }
+
+/*LES FILTRES CHECKBOX*/
+#resultats{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#resultats img{
+    width: 200px;
+}
+#tousProduits{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#tousProduits img{
+    width: 200px;
+}

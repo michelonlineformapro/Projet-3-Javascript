@@ -6,27 +6,40 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-
-
+    <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>JS -TABLEAU-</title>
+    <title>JS -FILTRES-</title>
 </head>
 <body>
-    <div class="parent">
+    <header id="menu" class="menuClasse"></header>
+    <aside id="leftAside" class="aside"></aside>
+    <br /><br />
+    <div class="conteneur">
+       
+        <h2 class="titre-h3">CATÉGORIES</h2>
         <span>
-            <input id="loisir" type="checkbox" value="loisir" />
+            <input class="input"  id="loisir" type="checkbox" value="loisir" />
             <label for="loisir">LOISIR</label>
 
-            <input id="meuble" type="checkbox" value="meuble" />
+            <input class="input"  id="meuble" type="checkbox" value="meuble" />
             <label for="meuble">MEUBLE</label>
 
-            <input id="informatique" type="checkbox" value="informatique" />
+            <input class="input"  id="informatique" type="checkbox" value="informatique" />
             <label for="informatique">INFORMATIQUE</label>
-        </span>
 
+        </span>
+        <hr>
+
+        <h2 class="titre-h2">RÉSULTATS</h2>
         <div id="resultats"></div>
+        <hr>
+        <h2 class="titre-h3">TOUS NOS PRODUITS</h2>
+        <div id="tousProduits"></div>
     </div>
 
-<script src="js/filtres.js"></script>
+    <script src="js/menu.js" type="text/javascript"></script>
+    <script src="js/leftMenu.js" type="text/javascript"></script>
+    <script src="js/filtres.js"></script>
 </body>
 </html>
