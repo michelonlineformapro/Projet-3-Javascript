@@ -60,244 +60,59 @@ let tableauProduits = [
         produitTTC: 0,
         categorie: "Musique"
     },
-
-
 ];
-//recup de la iste HTML <ul>
-let carteProduits = document.getElementById("produits");
-//Creation d'un tableau vide panier=[""]
-let panier = [];
 
-//Rechercher un produits
-//Rechercher
+let rechercherInput = document.getElementById("rechercher")
+let parentUl  = document.getElementById("resRecherche");
 
 
-function  resultatRecherche() {
-    let listeParent = document.getElementById("produitsRechercher");
-    let barreRecherche = document.getElementById("rechercher")
-    let resultLI = document.createElement("li");
-    resultLI.className = "produit-card-result";
+function rechercherproduit(){
+    //La boucle sur le tableau
 
-    barreRecherche.addEventListener("input", (event) =>{
-        let inputValue = event.target.value.toLowerCase();
-        console.log(inputValue);
+        rechercherInput.addEventListener("keyup", function (event) {
+            let motEnter = event.target.value.toLowerCase();
+            console.log(motEnter)
 
-        if(inputValue.length >= 0){
-            let res = tableauProduits.filter(produit =>
-                produit.nomProduits.toLowerCase().includes(inputValue))
-            console.log(res)
+            if(motEnter === ""){
+                parentUl.innerHTML = "Aucun résultats !!!!!";
+                let getP = document.querySelectorAll('p');
 
-            for(datas of res){
-                listeParent.innerHTML = datas.nomProduits
-                console.log(datas.nomProduits)
-                resultLI.innerHTML = `
-                    <hr>
-                    <p>${datas}</p>
-                    <h2 class="resulat-recherche">RESULTAT DE RECHERCHE</h2>
-                    <hr>
-                    <h3 class="titre-produit">${datas.nomProduits}</h3>
-              
-                  
-                `
-                listeParent.appendChild(resultLI)
+                for(let resP of getP){
+                    resP.remove();
+                }
+            }else{
+                let filterProduits = tableauProduits.filter(filtre =>
+                    filtre.nomProduits.toLowerCase().includes(motEnter))
+                console.log(filterProduits)
+
+                filterProduits.forEach(datas => {
+
+                    console.log(datas.nomProduits);
+                    console.log("ok go")
+                    enfant = document.createElement("p")
+                    enfant.innerHTML = datas.nomProduits
+                    parentUl.appendChild(enfant)
+
+                })
             }
 
-        /*
-            res.forEach(datas => {
-                resultLI.innerHTML = `
-                    <hr>
-                    <p>${datas}</p>
-                    <h2 class="resulat-recherche">RESULTAT DE RECHERCHE</h2>
-                    <hr>
-                    <h3 class="titre-produit">${datas.nomProduits}</h3>
-                    <img class="image-produit" src="${datas.imageProduit}" alt="${datas.nomProduits}" title="${datas.nomProduits}">
-                    <p>Description : </p>
-                    <p>${datas.descriptionProduits}</p>
-                    <p>Prix HT : ${datas.prixProduit} Euros</p> 
-                  
-                `
-                listeParent.appendChild(resultLI)
-            });
-*/
 
-        }else{
-            resultLI.innerHTML = "AUCUN RESULTATS"
-        }
-    });
-}
-
-
-//Fonction afficher les produits du tableau d'objet produits
-function afficherProduit(){
-    //La méthode forEach() est une boucle qui permet d'exécuter une fonction donnée sur chaque élément d'un tableau.
-
-    tableauProduits.forEach((produit) => {
-        //generation d'un noeud element <li>
-        let produitElement = document.createElement("li");
-        //Ajout d'une classe
-        produitElement.className = "produit-card";
-        //Ajout d'un id dynamique
-        produitElement.id = `produit${produit.id}`;
-        //Ajout de contenu HTML avec la concatenation ES6
-        //Acces aux données d'objet avec alias (produits).element de l'objet
-        //ex : produit.nomProduit
-        produitElement.innerHTML =
-            `
-        <h3 class="titre-produit">${produit.nomProduits}</h3>
-        <img class="image-produit" src="${produit.imageProduit}" alt="${produit.nomProduits}" title="${produit.nomProduits}">
-        <p>Description : </p>
-        <p>${produit.descriptionProduits}</p>
-        <p>Prix HT : ${produit.prixProduit} Euros</p> 
-        `
-        //Ajout des <li> a  <ul>
-        carteProduits.appendChild(produitElement)
-        //Au clic sur chaque <li> on ajoute l'objet cliquer au tableau vide panier
-        produitElement.addEventListener("click", () => {
-            panier.push(produit);
-            //On cache l'element cliqué du tableau paroduits
-            produitElement.style.display = "none"
-            //On appel la fonction affciher le panier
-            afficherPanier()
-        });
-    });
-}
-
-
-function afficherPanier() {
-
-    //On creer une variable vide
-    let produitPanier = "";
-    //On redup le tableau ingredients choisis rempli par les click sur les ingredients
-    panier.forEach(produit => {
-        //On ajoute les elements de la boucle a notre variable
-        produitPanier +=
-            `
-            <li class="produit-card-panier" id="produitAjouter${produit.id}">
-                <div id="btn-supprimer${produit.id}" class="supprimer-produit">&times;</div>
-                <img class="image-produit" src="${produit.imageProduit}" alt="${produit.nomProduits}" title="${produit.nomProduits}">     
-                <h3 class="titre-produit">${produit.nomProduits}</h3>
-                                                
-                <select class="select-quantite" id="selectQuantite${produit.id}">
-                    <option selected>Quantite(s)</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>                  
-                </select>   
-                <p class="prix-para">Prix HT :<br /> ${produit.prixProduit} Euros</p>    
-            </li>
-            `
-    });
-
-    document.getElementById("panier").innerHTML = produitPanier;
-
-    //supprimer un produit du panier
-    panier.forEach(produitSupprimer => {
-
-        let produit = document.getElementById(`produit${produitSupprimer.id}`);
-        let produitAjouter = document.getElementById(`produitAjouter${produitSupprimer.id}`);
-        let btnSupprimer = document.getElementById(`btn-supprimer${produitSupprimer.id}`);
-
-        btnSupprimer.addEventListener("click", () => {
-            produit.style.display = "block";
-            //produitAjouter.style.display = "none"
-            let produitIndex = panier.indexOf(produitSupprimer);
-            //On retire l'ingredient du tableau grace a son index
-            panier.splice(produitIndex,1);
-            //On supprime l'ingredient de l'affichage
-            produitAjouter.remove();
-            document.getElementById(`totalHT${produitSupprimer.id}`).innerHTML = "";
-            document.getElementById(`totalTTC${produitSupprimer.id}`).innerHTML = "";
-            document.getElementById("totalTTC").innerHTML = ""
-
-        });
-
-        //Les conteneurs html
-        /*
-        <div id="totalHTConteneur"></div>
-        <div id="totalTTConteneur"></div>
-        <div id="totalTTC"></div>
-         */
-        let prixHTConteneur = document.getElementById("totalHTConteneur");
-        let prixTTConteneur = document.getElementById("totalTTConteneur")
-
-        //Recup quantiter depuis le <select id=""><option>
-        let selectQuantite = document.getElementById( `selectQuantite${produitSupprimer.id}`);
-
-        //je creer une div avec un id unique = totalHT
-        let prixHT = document.createElement("div");
-        prixHT.id = `totalHT${produitSupprimer.id}`
-
-        //Je l'ajoute a :  <div id="totalTTConteneur"></div>
-        prixHTConteneur.appendChild(prixHT)
-
-        //je creer une div avec un id unique pour le prixTTC
-
-        let prixTTC = document.createElement("div");
-        prixTTC.id = `totalTTC${produitSupprimer.id}`
-        //Je l'ajoute a :  <div id="totalTTConteneur"></div>
-        prixTTConteneur.appendChild(prixTTC)
-
-        //Quand on chois la quantité dans la fenètre deroulante
-        selectQuantite.addEventListener("change", () =>{
-            //On stock l'index de la fenètre <option> = a la quantité
-            let index = selectQuantite.selectedIndex;
-            //Debug
-            console.log(index)
-            //recup du prix ht grace a un id unique prix HT
-            let prixHT = document.getElementById(`totalHT${produitSupprimer.id}`);
-
-            //On mutiplie le prix ht par les quantités
-            let prixDynamiqueHt = index * produitSupprimer.prixProduit;
-
-            ////recup du prix TTC grace a un id unique prix TTC
-            let prixTTCConteneur = document.getElementById(`totalTTC${produitSupprimer.id}`);
-            //Calcu du montant de TVA
-            let prixTva = Math.round(prixDynamiqueHt * 0.2);
-            //TVA + (prixHT * quantité)
-            let prixTTC = prixDynamiqueHt + prixTva;
-            //J'assigne le prix ttc a la valeur de mon tableauProduit
-            produitSupprimer.produitTTC = prixTTC
-
-            //je creer un tableau vide pour stocke tous les montant ttc
-            let tableauTTC = [];
-
-            //Depuis le tableau de produit = on boucle
-            tableauProduits.forEach(alias => {
-                //init de la somme de montant ttc = 0
-                let sum = 0
-                //On ajoute au tableau vide tous les montant TTC
-                tableauTTC.push(alias.produitTTC)
-                //Debug
-                console.log(tableauTTC)
-                //Boucle de parcour de tous le montant TTC stocké dans le tableau tableuTTC[]
-                for (let i = 0; i < tableauTTC.length; i++){
-                    //On affecte chaque montant TTC a sum
-                    sum += tableauTTC[i];
-                    //Debug
-                    console.log(sum);
-                    //Recup de la dernière div =  <div id="totalTTC"></div> de HTML
-                    let afficherTTC = document.getElementById("totalTTC");
-                    //Ajout du contenu HTML soit sum = a addiction de tous les montant ttc
-                    afficherTTC.innerHTML = "<p class='nom'>TOTAL TTC : </p>" + "<b class='nom'>" + sum + "</b>" + "EUROS"
-                }
-            });
-
-            //Hors de chaque produit du panier on affiche les details de la commande
-            prixHT.innerHTML = `<br /><span class="nom">${produitSupprimer.nomProduits} X Quantite(s) : ${index} = ${prixDynamiqueHt} Euros</span><br />`;
-            prixTTCConteneur.innerHTML = `<br /><span class="quantite">Prix HT: ${prixDynamiqueHt} Euros + TAUX 20% : ${prixTva}  Euros = ${produitSupprimer.produitTTC} Euros</span><br />`;
-
-
-            afficherPanier();
         })
 
 
-    })
+        /*
+        //Lecture du tableau
+        for(let i =0; i < tableauProduits.length; i++){
+            if(tableauProduits[i].nomProduits == motEnter){
+
+                parent.innerHTML = tableauProduits[i].nomProduits
+            }else{
+                parent.innerHTML = "Aucun resultats"
+            }
+        }
+        */
+
 }
 
 
-resultatRecherche();
-afficherProduit();
-
-
-
+rechercherproduit();

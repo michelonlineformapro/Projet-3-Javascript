@@ -93,6 +93,7 @@ function afficherProduitsCategories() {
     //boucle sur tous les <input type="checkbox">
     for(box of checkbox){
         //Quand etat change = coché ou non coché
+
         box.onchange = function (event) {
             //Recup de la valeur de input
             let checkBoxValue = event.target.value
@@ -186,14 +187,51 @@ function afficherProduitsCategories() {
     }
 }
 
+
+
+function rechercherProduits(){
+
+    let afficherRecherche = document.getElementById('resultatRecherche');
+
+    let rechercherInput = document.getElementById("rechercherInput")
+
+    rechercherInput.addEventListener("input", function (event){
+        let motEnter = event.target.value.toLowerCase();
+        console.log(motEnter);
+
+
+
+            let resultatsRecherche = tableauProduits.filter(recherche =>
+                recherche.nomProduit.toLowerCase().includes(motEnter))
+            console.log(resultatsRecherche)
+
+        if(motEnter.length !== ""){
+            resultatsRecherche.map(datas => {
+                let resultatLI = document.createElement("div");
+                resultatLI.innerHTML =
+
+                    `
+                <p>${datas.nomProduit}</p>
+                `
+                afficherRecherche.appendChild(resultatLI);
+            })
+        }else{
+            console.log("aucun resultats")
+        }
+
+
+
+
+
+
+    })
+
+    console.log(rechercherInput)
+}
+
+rechercherProduits();
 afficherProduitsCategories()
 
 afficherProduits();
-
-function testSourceTree(){
-    console.log("Message pour source tree");
-    console.log("Ajout d'un second test");
-}
-
 
 
